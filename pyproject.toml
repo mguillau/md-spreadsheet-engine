@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "markdown-spreadsheet-engine"
+version = "0.1.0"
+description = "A markdown table spreadsheet engine backed by IronCalc"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Matthieu Guillaumin", email = "matthieu@42dof.org" }
+]
+keywords = ["markdown", "spreadsheet", "ironcalc", "excel", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+dependencies = [
+    "ironcalc>=0.7.0",
+    "md-spreadsheet-parser>=1.4.3",
+    "click>=8.4.1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mguillau/markdown-spreadsheet-engine"
+Issues = "https://github.com/mguillau/markdown-spreadsheet-engine/issues"
+
+[project.scripts]
+md-calc = "md_spreadsheet_engine.engine:process_markdown_content"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/md_spreadsheet_engine"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+pythonpath = ["src"]

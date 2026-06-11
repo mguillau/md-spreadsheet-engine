@@ -1,0 +1,42 @@
+name: Compute Examples
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "examples/**"
+      - "src/**"
+      - "pyproject.toml"
+      - "scripts/compute_examples.py"
+      - ".github/workflows/compute_examples.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install .
+
+      - name: Recompute changed examples
+        run: python scripts/compute_examples.py --changed
+
+      - name: Commit and push updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: recompute spreadsheet examples"
+          file_pattern: "examples/**"
